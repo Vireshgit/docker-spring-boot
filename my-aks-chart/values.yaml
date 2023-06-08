@@ -1,11 +1,11 @@
-# Default values for my-eks-charts.
+# Default values for my-aks-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: 211223789150.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo
+  repository: myacrvir.azurecr.io/Vireshgit/docker-spring-boot
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -37,7 +37,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 80
 
 ingress:

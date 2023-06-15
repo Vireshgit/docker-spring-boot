@@ -4,8 +4,8 @@
 
 replicaCount: 1
 
-image:
-  repository: myacrvir.azurecr.io/Vireshgit/docker-spring-boot
+image: 
+  repository: viracrrepo1.azurecr.io/Vireshgit/docker-spring-boot
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -37,7 +37,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: loadbalancer
   port: 80
 
 ingress:

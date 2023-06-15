@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image: 
-  repository: viracrrepo1.azurecr.io/Vireshgit/docker-spring-boot
+  repository: viracrrepo1.azurecr.io/viracrrepo1
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

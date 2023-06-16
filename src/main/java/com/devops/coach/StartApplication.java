@@ -12,8 +12,8 @@ public class StartApplication {
 
     @GetMapping("/")
     public String index(final Model model) {
-        model.addAttribute("title", "Howdy Folks..Welcome to Devops Coaching by Coach AK!");
-        model.addAttribute("msg", "We are deploying springboot app inside EKS cluster using helm and Jenkins pipeline!!!!!");
+        model.addAttribute("title", "Hello J..As discussed, I have created VM in AZURE, installed jenkins, set-up CI-CD pipeline");
+        model.addAttribute("build docker image of spring boot application and deployed it to AKS cluster using HELM and jenkins pipeline","Hope this is ok!!!!!");
         return "index";
     }
 

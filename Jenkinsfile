@@ -1,50 +1,47 @@
 pipeline {
     agent any
-
-    environment {
-        registry = "211223789150.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo"
+    
+    environment{
+        registryUrl = "viracrrepo1.azurecr.io"
+        registryCredential = "ACR"
+        registryName = "viracrrepo1"
+        dockerImage = ""
+        
     }
+
     stages {
-        stage('Checkout') {
+        stage('check out') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akannan1087/docker-spring-boot']])
+               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Vireshgit/docker-spring-boot.git']]) 
             }
         }
-        
-        stage ("Build JAR") {
+        stage('build jar') {
             steps {
-                sh "mvn clean install"
+               sh "mvn clean install"
             }
         }
-        
-        stage ("Build Image") {
+        stage('build docker image') {
             steps {
-                script {
-                    docker.build registry
-                }
+               script{
+                   dockerImage = docker.build registryName
+               }
             }
         }
-        
-        stage ("Push to ECR") {
+        stage('upload image to ACR') {
             steps {
-                script {
-                    sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211223789150.dkr.ecr.us-east-1.amazonaws.com"
-                    sh "docker push 211223789150.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo:latest"
-                    
-                }
+               script{
+                    docker.withRegistry( "http://${registryUrl}", registryCredential ) {
+                    dockerImage.push("$BUILD_NUMBER")
+                    }
+               }
             }
         }
-        
-        stage ("Helm package") {
+        stage('helm deploy') {
             steps {
-                    sh "helm package springboot"
-                }
+               script{
+                    sh "helm upgrade ver-$BUILD_NUMBER --install my-aks-chart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
+               }
             }
-                
-        stage ("Helm install") {
-            steps {
-                    sh "helm upgrade myrelease-21 springboot-0.1.0.tgz"
-                }
-            }
+        }
     }
 }
